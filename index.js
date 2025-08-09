@@ -10,12 +10,19 @@ function Board()
 
     const printBoard = () =>
     {
-        const getBoard = board.map(row => row.map(column  => column.getValue));
+        const getBoard = board.map(row => row.map(column  => column.getValue()));
         console.log(getBoard);
     }
 
+    const dropToken = (token, row, column) => {
+        const position = board[row][column];
+        position.playerToken(token)
+        printBoard();
+    }
+
     return{
-        printBoard
+        printBoard,
+        dropToken 
     }
 }
 
@@ -23,10 +30,10 @@ function cell(){
     let value = "";
 
     const getValue = () => {
-        value
+        return value
     }
     const playerToken = (player) => {
-        value = player
+        return value = player
     }
 
     return {
@@ -34,5 +41,29 @@ function cell(){
     }
 }
 
-const board = Board();
-board.printBoard();
+
+/* Game controller */
+
+function GameController(player1 = "Player 1", player2 = "Player 2")
+{
+    const board = Board();
+
+    const players = [
+        {name: player1, token: "x"},
+        {name: player2, token: "o"},
+    ]
+
+    let currentPlayer = players[0];
+
+    function playersMove(row,column)
+    {
+        board.dropToken(currentPlayer.token, row,column)
+    }
+
+    return{
+        playersMove
+    }
+}
+
+const game = GameController();
+game.playersMove(1,1)
