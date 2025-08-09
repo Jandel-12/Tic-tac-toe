@@ -8,6 +8,11 @@ function Board()
         Array.from({ length: columns }, () => cell())
     );
 
+    const getBoard = () =>
+    {
+        return board
+    }
+
     const printBoard = () =>
     {
         const getBoard = board.map(row => row.map(column  => column.getValue()));
@@ -22,7 +27,8 @@ function Board()
 
     return{
         printBoard,
-        dropToken 
+        dropToken,
+        getBoard
     }
 }
 
@@ -54,13 +60,57 @@ function GameController(player1 = "Player 1", player2 = "Player 2")
     ]
 
     let currentPlayer = players[0];
+    let gameOver = false;
 
     function playersMove(row,column)
     {
+        if(gameOver)
+        {
+            console.log("It's a tie");
+            return;
+        }
+
+        const grid = board.getBoard();
+
+        if(!validMove(row,column,grid))
+        {
+            console.log("Please pick another position")
+            return;
+        }
+
+
         board.dropToken(currentPlayer.token, row,column)
+        
+
+        if(checkWinner(grid)){
+            console.log(`The winner is ${currentPlayer.name}`)
+            gameOver = true;
+        }
+
         switchPlayer(currentPlayer)
     }
 
+    function validMove(row,column, arr)
+    {
+        return !arr[row][column].getValue();
+    }
+
+    function checkWinner(grid)
+    {
+        const size = grid.length;
+        const values = grid.map(row => row.map(cell => cell.getValue()));
+
+        for(let i = 0; i < size; i++)
+        {
+            if(values[i][0] && values[i].every(v => v === values[i][0])) return true; 
+            if(values[0][i] && values[i].every(v => v === values[i][0])) return true; 
+        }
+
+        if(values[0][0] && values.every((row, idx) => row[idx] === values[0][0])) return true;
+        if(values[0][size - 1] && values.every((row, idx) => row[size.length -1 - idx] === values[0][size - 1])) return true;
+
+        return false;
+    }
     function switchPlayer(player)
     {
         player === players[0] ? currentPlayer = players[1] : currentPlayer = players[0]
@@ -74,3 +124,7 @@ function GameController(player1 = "Player 1", player2 = "Player 2")
 const game = GameController();
 game.playersMove(1,1)
 game.playersMove(1,1)
+game.playersMove(1,2)
+game.playersMove(0,0)
+game.playersMove(1,0)
+game.playersMove(2,2)
