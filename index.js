@@ -58,6 +58,12 @@ function GameController(player1 = "Player 1", player2 = "Player 2")
     function playersMove(row,column)
     {
         board.dropToken(currentPlayer.token, row,column)
+        switchPlayer(currentPlayer)
+    }
+
+    function switchPlayer(player)
+    {
+        player === players[0] ? currentPlayer = players[1] : currentPlayer = players[0]
     }
 
     return{
@@ -66,4 +72,5 @@ function GameController(player1 = "Player 1", player2 = "Player 2")
 }
 
 const game = GameController();
+game.playersMove(1,1)
 game.playersMove(1,1)
