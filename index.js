@@ -50,81 +50,137 @@ function cell(){
 
 /* Game controller */
 
-function GameController(player1 = "Player 1", player2 = "Player 2")
-{
+function GameController(player1 = "Player 1", player2 = "Player 2") {
     const board = Board();
 
     const players = [
-        {name: player1, token: "x"},
-        {name: player2, token: "o"},
-    ]
+        { name: player1, token: "x" },
+        { name: player2, token: "o" },
+    ];
 
     let currentPlayer = players[0];
     let gameOver = false;
 
-    function playersMove(row,column)
-    {
-        if(gameOver)
-        {
-            console.log("It's a tie");
+    function playersMove(row, column) {
+        if (gameOver) {
+            console.log("Game over! Please restart.");
             return;
         }
 
         const grid = board.getBoard();
 
-        if(!validMove(row,column,grid))
-        {
-            console.log("Please pick another position")
+        if (!validMove(row, column, grid)) {
+            console.log("Please pick another position");
             return;
         }
 
+        // Place the token first
+        board.dropToken(currentPlayer.token, row, column);
 
-        board.dropToken(currentPlayer.token, row,column)
-        
-
-        if(checkWinner(grid)){
-            console.log(`The winner is ${currentPlayer.name}`)
+        // Check for winner
+        if (checkWinner(grid)) {
+            const winnerDisplay = document.getElementById("winnerDisplay");
+            winnerDisplay.textContent = `The winner is ${currentPlayer.name}`
             gameOver = true;
+            return;
         }
 
-        switchPlayer(currentPlayer)
+        // Check for tie
+        if (isBoardFull(grid)) {
+            console.log("It's a tie!");
+            gameOver = true;
+            return;
+        }
+
+        // Switch to next player
+        switchPlayer();
     }
 
-    function validMove(row,column, arr)
-    {
+    function validMove(row, column, arr) {
         return !arr[row][column].getValue();
     }
 
-    function checkWinner(grid)
-    {
+    function checkWinner(grid) {
         const size = grid.length;
         const values = grid.map(row => row.map(cell => cell.getValue()));
 
-        for(let i = 0; i < size; i++)
-        {
-            if(values[i][0] && values[i].every(v => v === values[i][0])) return true; 
-            if(values[0][i] && values[i].every(v => v === values[i][0])) return true; 
+        // Check rows and columns
+        for (let i = 0; i < size; i++) {
+            if (values[i][0] && values[i].every(v => v === values[i][0])) return true;
+            if (values[0][i] && values.every(row => row[i] === values[0][i])) return true;
         }
 
-        if(values[0][0] && values.every((row, idx) => row[idx] === values[0][0])) return true;
-        if(values[0][size - 1] && values.every((row, idx) => row[size.length -1 - idx] === values[0][size - 1])) return true;
+        // Check diagonals
+        if (values[0][0] && values.every((row, idx) => row[idx] === values[0][0])) return true;
+        if (values[0][size - 1] && values.every((row, idx) => row[size - 1 - idx] === values[0][size - 1])) return true;
 
         return false;
     }
-    function switchPlayer(player)
-    {
-        player === players[0] ? currentPlayer = players[1] : currentPlayer = players[0]
+
+    function isBoardFull(grid) {
+        return grid.every(row => row.every(cell => cell.getValue()));
     }
 
-    return{
-        playersMove
+    function switchPlayer() {
+        currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
     }
+
+    function getBoard() {
+        return board.getBoard();
+    }
+
+    return {
+        playersMove,
+        getBoard
+    };
 }
 
-const game = GameController();
-game.playersMove(1,1)
-game.playersMove(1,1)
-game.playersMove(1,2)
-game.playersMove(0,0)
-game.playersMove(1,0)
-game.playersMove(2,2)
+
+
+
+function GameUI(){
+    const game = GameController();
+
+    const Gameboard = game.getBoard();
+
+    const board = document.querySelector(".board");
+    const updateScreen = () =>{
+
+        board.textContent = "";
+
+        Gameboard.forEach((row, rIdx) => {
+
+            row.forEach((cell, cIdx) => 
+            {
+                const cellButton = document.createElement("button");
+                cellButton.classList.add("cell");
+
+                cellButton.dataset.row = rIdx;
+                cellButton.dataset.column = cIdx;
+                cellButton.textContent = cell.getValue();
+                board.appendChild(cellButton);
+            }
+            )
+        });
+    }
+     function clickHandler(e)
+    {
+        const selectedRow = e.target.dataset.row;
+        const selectedColumn = e.target.dataset.column;
+        // Make sure I've clicked a column and not the gaps in between
+        if (!selectedColumn && selectedColumn) return;
+        
+        game.playersMove(selectedRow,selectedColumn);
+        updateScreen(); 
+    }
+    board.addEventListener('click', clickHandler)
+
+    updateScreen();
+    
+}
+
+const game1 = GameUI();
+
+
+
+

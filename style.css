@@ -1,0 +1,37 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.game-container
+{
+    width: 600px;
+}
+
+.board
+{
+    height: 400px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) ;
+    margin-top: 10px;
+}
+
+.playerDisplay{
+    display: flex;   
+    justify-content: space-around;
+    width: 100%;
+}
+
+.playerDisplay div
+{
+    border: 2px solid salmon;
+    padding: 10px;
+}
+
+.active
+{
+    background-color: brown;
+    color: whitesmoke;
+}
+
