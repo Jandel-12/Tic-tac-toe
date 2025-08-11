@@ -1,37 +1,99 @@
-body{
+body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-}
-.game-container
-{
-    width: 600px;
+    min-height: 100vh; 
+    background-color: #f8f9fa; 
+    font-family: sans-serif;
 }
 
-.board
-{
+.game-container {
+    width: 600px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.board {
     height: 400px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr) ;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
     margin-top: 10px;
 }
 
-.playerDisplay{
+.cell {
+    background-color: #fff;
+    border: 2px solid #ccc;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.cell:hover {
+    background-color: #f1f1f1;
+    transform: scale(1.05);
+}
+
+.playerDisplay {
     display: flex;   
     justify-content: space-around;
     width: 100%;
+    margin-bottom: 15px;
 }
 
-.playerDisplay div
-{
+.playerDisplay div {
     border: 2px solid salmon;
     padding: 10px;
+    border-radius: 8px;
+    min-width: 100px;
+    text-align: center;
 }
 
-.active
-{
-    background-color: brown;
-    color: whitesmoke;
+.active {
+    background-color: salmon;
+    color: white;
+    border-color: darkred;
+    font-weight: bold;
 }
+
+#winnerDisplay {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-top: 15px;
+    font-weight: bold;
+}
+.cell[data-token="x"] {
+    color: #007bff;
+}
+.cell[data-token="o"] {
+    color: #dc3545;
+}
+.controls {
+    text-align: center;
+    margin-top: 15px;
+}
+
+#restartBtn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+#restartBtn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
 
