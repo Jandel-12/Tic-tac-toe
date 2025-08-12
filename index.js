@@ -36,6 +36,8 @@ function Board()
 }
 
 function cell(){
+
+    // \u00A0 is a value that represent space 
     let value = "";
 
     const getValue = () => {

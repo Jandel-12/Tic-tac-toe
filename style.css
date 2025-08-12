@@ -5,10 +5,14 @@ body {
     min-height: 100vh; 
     background-color: #f8f9fa; 
     font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .game-container {
-    width: 600px;
+    width: 60%;
+    height: 60%;
     padding: 20px;
     background-color: white;
     border-radius: 12px;
@@ -16,7 +20,6 @@ body {
 }
 
 .board {
-    height: 400px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 5px;
@@ -24,6 +27,7 @@ body {
 }
 
 .cell {
+    height: 75px;
     background-color: #fff;
     border: 2px solid #ccc;
     font-size: 2rem;
@@ -99,4 +103,11 @@ body {
     transform: scale(1.05);
 }
 
+@media(width>1000px)
+{
+    .game-container
+    {
+        width: 40%;
+    }
+} 
 
