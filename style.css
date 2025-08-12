@@ -68,6 +68,9 @@ body {
     font-size: 1.5rem;
     margin-top: 15px;
     font-weight: bold;
+    background-color: #dc3545;
+    padding: 8px;
+    border-radius: 8px;
 }
 .cell[data-token="x"] {
     color: #007bff;

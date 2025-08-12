@@ -148,6 +148,7 @@ function GameUI() {
     const playerOneEl = document.querySelector(".playerOne");
     const playerTwoEl = document.querySelector(".playerTwo");
     const winnerDisplay = document.getElementById("winnerDisplay");
+    let scores = {Player1: 0, Player2: 0}
 
     function updateScreen() {
         boardEl.textContent = "";
@@ -178,6 +179,16 @@ function GameUI() {
         const result = game.playersMove(Number(selectedRow), Number(selectedColumn));
         
         if (result?.status === "win") {
+            
+
+            if(result.winner === "Player 1")
+            {
+                scores.Player1+=1;
+            }
+            else
+            {
+                scores.Player2+=1
+            }
             winnerDisplay.textContent = `The winner is ${result.winner}`;
         } else if (result?.status === "tie") {
             winnerDisplay.textContent = "It's a tie!";
@@ -198,7 +209,13 @@ function GameUI() {
     function startGame() {
     game.reset(); 
     updateScreen();
+    scoreBoard();
     updateStatus("Player 1's turn");
+    }
+
+    function scoreBoard()
+    {
+        alert(`The score are Player1: ${scores.Player1} - Player2: ${scores.Player2}`);
     }
 
 
